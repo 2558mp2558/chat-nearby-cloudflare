@@ -1,6 +1,6 @@
 // server.js - เซิร์ฟเวอร์สำหรับ index.html (แชตคนใกล้ตัว สมุทรสงคราม)
 // ไม่ต้องติดตั้งแพ็กเกจเพิ่ม ใช้ Node.js 16 ขึ้นไป
-// รัน: ADMIN_KEY=รหัสของคุณ node server.js   แล้วเปิด http://localhost:3000
+// รัน: ADMIN_KEY=รหัสของคุณ node server.js   แล้วเปิด https://2558mp2558.github.io
 const http = require('http'), fs = require('fs'), path = require('path'), crypto = require('crypto');
 const PORT = process.env.PORT || 3000;
 const ADMIN_KEY = process.env.ADMIN_KEY || '';
@@ -256,6 +256,6 @@ setInterval(function () {
 
 server.listen(PORT, function () {
   botStart();
-  console.log('เปิดที่ http://localhost:' + PORT);
+  console.log('https://2558mp2558.github.io:' + PORT);
   if (!ADMIN_KEY) console.log('ยังไม่ได้ตั้ง ADMIN_KEY จึงใช้ระบบแอดมินไม่ได้');
 });
