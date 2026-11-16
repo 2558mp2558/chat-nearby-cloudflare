@@ -1,0 +1,7 @@
+{
+  "name": "sm-chat",
+  "version": "1.0.0",
+  "description": "แชตคนใกล้ตัว จังหวัดสมุทรสงคราม (ไม่ต้องล็อกอิน)",
+  "scripts": { "start": "node server.js" },
+  "engines": { "node": ">=18" }
+}

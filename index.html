@@ -34,10 +34,9 @@ button:disabled,select:disabled{opacity:.6}
 .people{display:flex;flex-direction:column;gap:6px}
 .chip{flex:none;background:var(--bg);border:1px solid var(--bd);border-radius:10px;padding:5px 8px;font-size:11px;color:var(--mut);word-break:break-word}
 .chip b{display:block;color:var(--ac);font-size:13px}
-#main{flex:1;display:flex;gap:8px;min-height:0;min-width:0}
-#side{width:118px;flex:none;overflow-y:auto;background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:8px;min-width:0}
+#main{flex:1;display:flex;gap:8px;min-height:0}
+#side{width:118px;flex:none;overflow-y:auto;background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:8px}
 #msgs{flex:1;min-width:0;overflow-y:auto;display:flex;flex-direction:column;gap:6px;min-height:120px}
-@media(max-width:560px){#main{flex-direction:column-reverse}#side{width:100%;max-height:104px;overflow-x:auto;overflow-y:auto}#side .people{flex-direction:row;flex-wrap:nowrap;overflow-x:auto}#side .chip{min-width:92px;max-width:130px}#msgs{width:100%;min-height:180px}}
 .m{max-width:88%;background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:8px 12px;font-size:15px;word-break:break-word}
 .m.me{align-self:flex-end;background:var(--me);border-color:transparent}
 #mq{flex:none;border:2px solid #e5484d;border-radius:10px;overflow:hidden;white-space:nowrap;background:var(--card);padding:6px 0}
@@ -176,7 +175,7 @@ function render(){
 function res(j){
   if(j._s===403&&j.error==="banned"){banUntil=j.until;chkBan()}
   else if(j._s===429)note("ส่งเร็วเกินไป รอสักครู่นะ");
-  else if(j._s!==200)note("ส่งไม่สำเร็จ ("+(j.error||j._s||"เชื่อมต่อไม่ได้")+") ลองใหม่อีกครั้ง");
+  else if(j._s!==200)note("ส่งไม่สำเร็จ ลองใหม่อีกครั้ง");
 }
 function out(x){
   if(chkBan())return false;
