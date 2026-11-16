@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>แชตคนใกล้ตัว สมุทรสงคราม</title>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+--bg:#f3f5f7;--card:#fff;--tx:#1d2330;--mut:#7a8394;--ac:#1f9d7a;--me:#d8f3ea;--bd:#e1e5ea}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#12161c;--card:#1c222b;--tx:#eceff4;--mut:#8a93a3;--ac:#35c19a;--me:#17433a;--bd:#2a313c}}
+:root[data-theme="dark"]{--bg:#12161c;--card:#1c222b;--tx:#eceff4;--mut:#8a93a3;--ac:#35c19a;--me:#17433a;--bd:#2a313c}
+html{scroll-padding-top:env(safe-area-inset-top,0px);height:100%}
+*{box-sizing:border-box}
+body{margin:0;height:100%;background:var(--bg);color:var(--tx);font-family:system-ui,"Noto Sans Thai",sans-serif;max-width:480px;margin:0 auto;display:flex;flex-direction:column;padding:10px;gap:8px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:10px}
+.row{display:flex;gap:8px;align-items:center}
+.row+.row{margin-top:8px}
+input,select,button{font:inherit;color:var(--tx);background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:10px;min-height:44px;min-width:0}
+input,select{flex:1;width:100%}
+#tabs button{flex:1;font-size:13px;padding:6px}
+.top{padding:6px 8px}
+.top input,.top select,.top button{min-height:36px;padding:6px 8px;font-size:13px}
+.top .row+.row{margin-top:6px}
+.chip{cursor:pointer}
+.vp{background:transparent;border:0;padding:4px 8px;min-height:36px;font-size:14px}
+#vb,#ib,#dib,#dvb{flex:none;padding:8px 12px;font-size:18px}
+.pic{max-width:100%;max-height:220px;border-radius:10px;display:block;cursor:pointer}
+#vb.rec,#dvb.rec{background:#e5484d;color:#fff;border-color:#e5484d;font-size:14px}
+.av{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;object-fit:cover;background:var(--ac);color:#fff;font-weight:600;font-size:14px;margin-bottom:2px}
+small .av{width:16px;height:16px;font-size:10px;margin:0 4px 0 0;vertical-align:middle}
+button.p{background:var(--ac);color:#fff;border:0;font-weight:600}
+button:disabled,select:disabled{opacity:.6}
+.mut{color:var(--mut);font-size:12px}
+.people{display:flex;flex-direction:column;gap:6px}
+.chip{flex:none;background:var(--bg);border:1px solid var(--bd);border-radius:10px;padding:5px 8px;font-size:11px;color:var(--mut);word-break:break-word}
+.chip b{display:block;color:var(--ac);font-size:13px}
+#main{flex:1;display:flex;gap:8px;min-height:0}
+#side{width:118px;flex:none;overflow-y:auto;background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:8px}
+#msgs{flex:1;min-width:0;overflow-y:auto;display:flex;flex-direction:column;gap:6px;min-height:120px}
+.m{max-width:88%;background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:8px 12px;font-size:15px;word-break:break-word}
+.m.me{align-self:flex-end;background:var(--me);border-color:transparent}
+#mq{flex:none;border:2px solid #e5484d;border-radius:10px;overflow:hidden;white-space:nowrap;background:var(--card);padding:6px 0}
+#mqt{display:inline-block;color:#e5484d;font-weight:700;font-size:14px;animation:mq 24s linear infinite}
+@keyframes mq{from{transform:translateX(480px)}to{transform:translateX(-100%)}}
+@media(prefers-reduced-motion:reduce){#mqt{animation:none;white-space:normal}}
+.m small{display:block;color:var(--mut);font-size:11px;margin-bottom:2px}
+</style>
+</head>
+<body>
+<div id="mq"><div id="mqt">ผู้ดูแลระบบจะใช้ชื่อแชตสีแดงในการพิมพ์คุยเท่านั้น ติดต่อผู้ดูแลระบบได้ที่เฟซบุ๊ก มานพ อาญชนะปาน</div></div>
+<div class="card top">
+  <div class="row"><div id="cnt" style="flex:1;font-size:15px;font-weight:700;color:var(--ac)">🟢 ออนไลน์ 0 คน</div><button id="adm" title="แอดมิน" style="flex:none">🔑</button><button id="anb" title="ประกาศถึงทุกคน" style="flex:none;display:none">📢</button><select id="rad" style="flex:none;width:auto" title="แสดงข้อความ"><option value="0">อำเภอเดียวกัน</option><option value="7">ใน 7 กม.</option><option value="99" selected>ทั้งจังหวัด</option></select></div>
+  <div class="row" id="tabs"><button class="p" data-r="general">💬 แชตทั่วไป</button><button data-r="checkpoint">🚔 ตรวจสอบด่านตรวจในจังหวัด</button></div>
+  <div class="row"><button id="avb" title="เปลี่ยนรูปโปรไฟล์" style="flex:none;padding:6px"></button><input id="nm" maxlength="12" placeholder="ชื่อของคุณ"><input id="avf" type="file" accept="image/*" hidden style="display:none">
+    <select id="dist"><option value="">เลือกอำเภอ…</option><option value="0">อ.เมือง</option><option value="1">อ.อัมพวา</option><option value="2">อ.บางคนที</option></select>
+  </div>
+</div>
+<div id="main"><div id="msgs"></div><div id="side"><div class="mut" style="margin-bottom:6px">ผู้ออนไลน์</div><div class="people" id="ppl"></div></div></div>
+<div class="row"><input id="ci" maxlength="200" placeholder="พิมพ์ข้อความ…"><button id="ib" title="ส่งรูปภาพ">🖼️</button><input id="imf" type="file" accept="image/*" hidden style="display:none"><button id="vb" title="ส่งข้อความเสียง (สูงสุด 15 วินาที)">🎙️</button><button id="cb" class="p" disabled>ส่ง</button></div>
+<div id="an" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:11;align-items:center;justify-content:center;padding:20px"><div class="card" style="max-width:420px;width:100%;text-align:center;border:3px solid #e5484d;padding:24px 16px"><div id="ant" style="color:#e5484d;font-size:30px;font-weight:800;line-height:1.4;word-break:break-word"></div><div class="mut" style="margin-top:14px">📢 ประกาศจากผู้ดูแลระบบ · แตะเพื่อปิด</div></div></div>
+<div id="lb" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:10;align-items:center;justify-content:center"><img id="lbi" alt="" style="max-width:95%;max-height:90%"></div>
+<div id="dmw" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9;align-items:center;justify-content:center;padding:12px;padding-top:calc(12px + env(safe-area-inset-top,0px));padding-bottom:calc(12px + env(safe-area-inset-bottom,0px))">
+ <div class="card" style="width:100%;max-width:440px;height:75%;display:flex;flex-direction:column;gap:8px">
+  <div class="row"><b id="dmt" style="flex:1"></b><button id="dban" style="display:none;font-size:12px"></button><button id="dmx">✕</button></div>
+  <div id="dmm" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:6px"></div>
+  <div class="mut">ส่งถึงผู้รับเท่านั้น แต่ไม่ได้เข้ารหัส ผู้ดูแลเซิร์ฟเวอร์อาจเปิดไฟล์ข้อมูลอ่านได้ อย่าส่งข้อมูลสำคัญ</div>
+  <div class="row"><input id="dmi" maxlength="200"><button id="dib" title="ส่งรูปภาพ">🖼️</button><button id="dvb" title="ส่งข้อความเสียง (สูงสุด 15 วินาที)">🎙️</button><button id="dmb" class="p">ส่ง</button></div>
+ </div>
+</div>
+<script>
+var $=function(i){return document.getElementById(i)};
+var AREAS=[["อ.เมือง",13.41,100.002],["อ.อัมพวา",13.427,99.956],["อ.บางคนที",13.368,99.936]];
+var uid=null,admin=false,banUntil=0,myPv=0,d=null,people=[],chat=[],dm=[],bans={},room="general",dmPeer=null,seen={},armed=false,armT=null,conn=false,es=null,loadTs=Date.now();
+var tk="",ak="",myPic="",me="ผู้ใช้"+Math.floor(100+Math.random()*900);
+function rnd(){var a=new Uint8Array(24);crypto.getRandomValues(a);return Array.from(a,function(b){return ("0"+b.toString(16)).slice(-2)}).join("")}
+try{
+  tk=localStorage.getItem("smtk")||"";if(!tk){tk=rnd();localStorage.setItem("smtk",tk)}
+  ak=localStorage.getItem("smak")||"";me=localStorage.getItem("smn")||me;myPic=localStorage.getItem("smp")||"";
+  var sd=localStorage.getItem("smd");if(sd!==null&&sd!=="")d=+sd;
+}catch(e){}
+if(!tk)tk=rnd();
+$("nm").value=me;if(d!==null)$("dist").value=d;$("cb").disabled=d===null;
+
+function api(path,obj){
+  obj=obj||{};obj.tk=tk;if(ak)obj.ak=ak;
+  return fetch(path,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(obj)})
+    .then(function(r){return r.json().catch(function(){return {}}).then(function(j){j._s=r.status;return j})})
+    .catch(function(){return {_s:0}});
+}
+function note(t){$("ci").placeholder=t;$("dmi").placeholder=t}
+function ph(){return room==="checkpoint"?"แจ้งจุดตรวจ เช่น ถนน/ช่วงเวลา…":"พิมพ์ข้อความ…"}
+function dmOpen(){return $("dmw").style.display==="flex"}
+function chkBan(){
+  if(banUntil>Date.now()){note("🚫 คุณถูกห้ามพิมพ์จนถึง "+new Date(banUntil).toLocaleTimeString("th-TH",{hour:"2-digit",minute:"2-digit"}));return true}
+  return false;
+}
+function hm(t){return new Date(t).toLocaleString("th-TH",{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"})}
+
+// ---------- รูปโปรไฟล์ ----------
+function avEl(id,name,pv){
+  var e,ini=Array.from(String(name||"?"))[0];
+  if(id===uid&&myPic){e=document.createElement("img");e.src=myPic;e.alt=""}
+  else if(pv){
+    e=document.createElement("img");e.src="/pic/"+id+"?v="+pv;e.alt="";
+    e.onerror=function(){var s=document.createElement("span");s.className=e.className;s.style.cssText=e.style.cssText;s.textContent=ini;if(e.parentNode)e.parentNode.replaceChild(s,e)};
+  }else{e=document.createElement("span");e.textContent=ini}
+  e.className="av";return e;
+}
+function setAv(){var b=$("avb");b.textContent="";var e=avEl(uid,me,myPv);e.style.width="26px";e.style.height="26px";e.style.margin="0";b.appendChild(e)}
+setAv();
+$("avb").onclick=function(){$("avf").click()};
+$("avf").onchange=function(){
+  var f=this.files&&this.files[0];this.value="";
+  if(!f||f.type.indexOf("image/")!==0)return;
+  var rd=new FileReader();
+  rd.onload=function(){var im=new Image();im.onload=function(){
+    var S=128,c=document.createElement("canvas");c.width=c.height=S;var x=c.getContext("2d");
+    var m=Math.min(im.width,im.height),sx=(im.width-m)/2,sy=(im.height-m)/2;
+    x.drawImage(im,sx,sy,m,m,0,0,S,S);
+    myPic=c.toDataURL("image/jpeg",0.8);
+    try{localStorage.setItem("smp",myPic)}catch(e){}
+    setAv();uploadPic();render();
+  };im.src=rd.result};
+  rd.readAsDataURL(f);
+};
+function uploadPic(){if(myPic)api("/api/pic",{pic:myPic}).then(function(j){if(j.pv){myPv=j.pv;setAv()}})}
+
+// ---------- ระยะทาง ----------
+function km(a,b){var R=6371,r=Math.PI/180,x=(AREAS[b][1]-AREAS[a][1])*r,y=(AREAS[b][2]-AREAS[a][2])*r,
+  h=Math.sin(x/2)*Math.sin(x/2)+Math.cos(AREAS[a][1]*r)*Math.cos(AREAS[b][1]*r)*Math.sin(y/2)*Math.sin(y/2);return 2*R*Math.asin(Math.sqrt(h))}
+function far(x){return x===d?"อำเภอเดียวกัน":AREAS[x][0]+" · ประมาณ "+Math.round(km(d,x))+" กม."}
+function ok(x){var r=+$("rad").value;return r===99||(r===0?x===d:x===d||km(d,x)<=r)}
+
+// ---------- แสดงผล ----------
+function body(m){
+  if(m.exp&&!m.im&&!m.au)return document.createTextNode("⌛ "+(m.k==="v"?"ข้อความเสียง":"รูปภาพ")+"หมดอายุแล้ว");
+  if(m.k==="v"&&typeof m.au==="string"&&m.au.indexOf("data:audio/")===0){
+    var key=(m.u||m.a)+"|"+m.ts,pl=curKey===key&&!au.paused,b=document.createElement("button");
+    b.className="vp";b.textContent=(pl?"⏸":"▶")+" 🎙️ "+(m.dur||"")+" วิ";b.onclick=function(){playV(m)};return b}
+  if(m.k==="i"&&typeof m.im==="string"&&m.im.indexOf("data:image/")===0){var pi=document.createElement("img");pi.className="pic";pi.src=m.im;pi.alt="";pi.onclick=function(){$("lbi").src=m.im;$("lb").style.display="flex"};return pi}
+  return document.createTextNode(m.t||"");
+}
+var au=new Audio(),curKey="";
+au.onplay=au.onpause=au.onended=function(){render();renderDm()};
+function playV(m){var key=(m.u||m.a)+"|"+m.ts;if(curKey===key&&!au.paused){au.pause();return}curKey=key;au.src=m.au;au.play().catch(function(){})}
+function nameSpan(name,isAdm){var s=document.createElement("span");s.textContent=name;if(isAdm)s.style.cssText="color:#e5484d;font-weight:700";return s}
+function render(){
+  var all=people.filter(function(p){return p.id!==uid}),nb=all.filter(function(p){return p.bot}).length;
+  var un={};dm.forEach(function(m){if(m.a!==uid&&m.ts>(seen[m.a]||loadTs))un[m.a]=1});var nu=Object.keys(un).length;
+  $("cnt").textContent=(conn?"🟢":"🔴")+" ออนไลน์ "+(all.length-nb+1)+" คน"+(nb?" · 🤖 "+nb+" บอท":"")+(admin?" · 👑":"")+(nu?" · 🔔 "+nu+" ข้อความส่วนตัว":"");
+  $("adm").textContent=admin?"👑":"🔑";$("anb").style.display=admin?"":"none";
+  var pe=$("ppl"),box=$("msgs");pe.textContent="";box.textContent="";
+  if(d===null){pe.className="mut";pe.textContent="เลือกอำเภอของคุณเพื่อเริ่มแชต";
+    var h=document.createElement("div");h.className="mut";h.style.textAlign="center";h.textContent="เลือกอำเภอด้านบนก่อนนะ";box.appendChild(h);return}
+  pe.className="people";
+  var list=all.filter(function(p){return AREAS[p.d]&&ok(p.d)}).sort(function(a,b){return km(d,a.d)-km(d,b.d)});
+  if(!list.length)pe.textContent="ยังไม่มีคนอื่นออนไลน์ในระยะ";
+  list.forEach(function(p){
+    var c=document.createElement("div"),b=document.createElement("b");c.className="chip";
+    b.textContent=(un[p.id]?"🔔 ":"")+p.n+(p.bot?" 🤖":"");c.title="แตะเพื่อกระซิบ";if(p.adm)b.style.color="#e5484d";
+    c.onclick=function(){openDm(p)};c.appendChild(avEl(p.id,p.n,p.pv));c.appendChild(b);c.appendChild(document.createTextNode(far(p.d)));pe.appendChild(c)});
+  chat.filter(function(m){return (m.r||"general")===room}).sort(function(a,b){return a.ts-b.ts}).forEach(function(m){
+    if(!AREAS[m.d])return;var mine=m.u===uid;if(!mine&&!ok(m.d))return;
+    var e=document.createElement("div"),s=document.createElement("small");
+    e.className="m"+(mine?" me":"");
+    s.appendChild(nameSpan(mine?"คุณ":m.n+(m.bot?" 🤖":""),m.adm));
+    s.appendChild(document.createTextNode((mine?"":" · "+far(m.d))+" · "+new Date(m.ts).toLocaleString("th-TH",{day:"numeric",month:"short",year:"numeric",hour:"2-digit",minute:"2-digit"})));
+    s.insertBefore(avEl(m.u,mine?me:m.n,m.pv),s.firstChild);
+    e.appendChild(s);e.appendChild(body(m));box.appendChild(e);
+  });
+  box.scrollTop=box.scrollHeight;
+}
+
+// ---------- ส่งข้อความ ----------
+function res(j){
+  if(j._s===403&&j.error==="banned"){banUntil=j.until;chkBan()}
+  else if(j._s===429)note("ส่งเร็วเกินไป รอสักครู่นะ");
+  else if(j._s!==200)note("ส่งไม่สำเร็จ ลองใหม่อีกครั้ง");
+}
+function out(x){
+  if(chkBan())return false;
+  var o={n:me},k;
+  if(dmOpen()){
+    if(!dmPeer)return false;
+    o.to=dmPeer.id;for(k in x)o[k]=x[k];
+    api("/api/dm",o).then(res);return true;
+  }
+  if(d===null){$("ci").placeholder="เลือกอำเภอก่อนนะ";return false}
+  o.d=d;o.r=room;for(k in x)o[k]=x[k];$("ci").placeholder=ph();
+  api("/api/send",o).then(res);return true;
+}
+function send(){var v=$("ci").value.trim();if(!v)return;if(out({k:"t",t:v}))$("ci").value=""}
+$("cb").onclick=send;
+$("ci").onkeydown=function(e){if(e.key==="Enter")send()};
+function sendDm(){var v=$("dmi").value.trim();if(!v)return;if(out({k:"t",t:v}))$("dmi").value=""}
+$("dmb").onclick=sendDm;
+$("dmi").onkeydown=function(e){if(e.key==="Enter")sendDm()};
+
+function push(){if(d!==null)api("/api/presence",{n:me,d:d}).then(function(j){if(j.pv!==undefined)myPv=j.pv})}
+$("dist").onchange=function(){var v=$("dist").value;d=v===""?null:+v;try{localStorage.setItem("smd",v)}catch(e){}$("cb").disabled=d===null;push();render()};
+$("nm").onchange=function(){var v=$("nm").value.trim().slice(0,12);if(!v)return;me=v;try{localStorage.setItem("smn",me)}catch(e){}setAv();push()};
+$("rad").onchange=render;
+var tb=document.querySelectorAll("#tabs button");
+Array.prototype.forEach.call(tb,function(b){b.onclick=function(){room=b.dataset.r;Array.prototype.forEach.call(tb,function(x){x.className=x.dataset.r===room?"p":""});$("ci").placeholder=ph();render()}});
+
+// ---------- ข้อความกระซิบ ----------
+function openDm(p){
+  dmPeer=p;
+  $("dmt").textContent="🤫 กระซิบถึง "+p.n+(p.bot?" 🤖":"");$("dmt").style.color=p.adm?"#e5484d":"";
+  armed=false;$("dban").style.display=(admin&&p.id!==uid&&!p.adm&&!p.bot)?"":"none";updBan();
+  $("dmi").placeholder="พิมพ์ข้อความส่วนตัว…";
+  $("dmw").style.display="flex";renderDm();render();
+}
+function renderDm(){
+  var box=$("dmm");box.textContent="";if(!dmPeer)return;updBan();
+  seen[dmPeer.id]=Date.now();
+  var list=dm.filter(function(m){return m.a===dmPeer.id||m.b===dmPeer.id}).sort(function(a,b){return a.ts-b.ts});
+  if(!list.length){var h=document.createElement("div");h.className="mut";h.style.textAlign="center";h.textContent="ยังไม่มีข้อความ ลองทักทายดูสิ";box.appendChild(h)}
+  list.forEach(function(m){
+    var mine=m.a===uid,e=document.createElement("div"),s=document.createElement("small");
+    e.className="m"+(mine?" me":"");
+    s.appendChild(nameSpan(mine?"คุณ":m.an,m.adm));s.appendChild(document.createTextNode(" · "+hm(m.ts)));
+    s.insertBefore(avEl(m.a,mine?me:m.an,m.pv),s.firstChild);
+    e.appendChild(s);e.appendChild(body(m));box.appendChild(e);
+  });
+  box.scrollTop=box.scrollHeight;
+}
+$("dmx").onclick=function(){dmPeer=null;$("dmw").style.display="none";render()};
+function updBan(){
+  if(!dmPeer)return;var on=(bans[dmPeer.id]||0)>Date.now();
+  $("dban").textContent=on?"✅ ปลดแบน":armed?"แตะอีกครั้งเพื่อยืนยัน":"🚫 แบน 100 นาที";
+}
+$("dban").onclick=function(){
+  if(!admin||!dmPeer)return;
+  var id=dmPeer.id,on=(bans[id]||0)>Date.now();
+  if(on){api("/api/ban",{target:id,mins:0});armed=false;return}
+  if(!armed){armed=true;updBan();clearTimeout(armT);armT=setTimeout(function(){armed=false;updBan()},4000);return}
+  armed=false;api("/api/ban",{target:id,mins:100});
+};
+
+// ---------- รูปภาพ ----------
+$("ib").onclick=function(){if(d===null){$("ci").placeholder="เลือกอำเภอก่อนนะ";return}$("imf").click()};
+$("dib").onclick=function(){$("imf").click()};
+$("lb").onclick=function(){$("lb").style.display="none"};
+$("imf").onchange=function(){
+  var f=this.files&&this.files[0];this.value="";
+  if(!f||f.type.indexOf("image/")!==0)return;
+  var rd=new FileReader();
+  rd.onload=function(){var im=new Image();im.onload=function(){
+    var sc=Math.min(1,800/Math.max(im.width,im.height)),w=Math.round(im.width*sc),h=Math.round(im.height*sc);
+    var c=document.createElement("canvas");c.width=w;c.height=h;c.getContext("2d").drawImage(im,0,0,w,h);
+    var q=0.7,u=c.toDataURL("image/jpeg",q);
+    while(u.length>190000&&q>0.3){q-=0.1;u=c.toDataURL("image/jpeg",q)}
+    if(u.length>190000){note("รูปใหญ่เกินไป");return}
+    out({k:"i",im:u});
+  };im.src=rd.result};
+  rd.readAsDataURL(f);
+};
+
+// ---------- ข้อความเสียง (สูงสุด 15 วินาที) ----------
+var mr=null,mch=[],mt=null,ms=0,mst=null;
+$("dvb").onclick=function(){$("vb").click()};
+$("vb").onclick=async function(){
+  if(mr){mr.stop();return}
+  if(chkBan())return;
+  if(d===null&&!dmOpen()){$("ci").placeholder="เลือกอำเภอก่อนนะ";return}
+  if(!navigator.mediaDevices||!window.MediaRecorder){note("เบราว์เซอร์นี้ไม่รองรับการอัดเสียง");return}
+  try{mst=await navigator.mediaDevices.getUserMedia({audio:true})}catch(e){note("ใช้ไมโครโฟนไม่ได้ ตรวจสอบสิทธิ์การเข้าถึง");return}
+  try{mr=new MediaRecorder(mst,{audioBitsPerSecond:16000})}catch(e){mr=new MediaRecorder(mst)}
+  mch=[];ms=0;
+  mr.ondataavailable=function(e){if(e.data&&e.data.size)mch.push(e.data)};
+  mr.onstop=function(){
+    clearInterval(mt);mst.getTracks().forEach(function(t){t.stop()});
+    var type=mr.mimeType||"audio/webm",secs=ms;mr=null;$("vb").className=$("dvb").className="";$("dvb").textContent=$("vb").textContent="🎙️";
+    var blob=new Blob(mch,{type:type});
+    if(!blob.size||secs<1)return;
+    var fr=new FileReader();fr.onload=function(){
+      if(fr.result.length>220000){note("เสียงใหญ่เกินไป ลองพูดให้สั้นลง");return}
+      out({k:"v",au:fr.result,dur:Math.min(secs,15)});
+    };fr.readAsDataURL(blob);
+  };
+  mr.start();$("vb").className=$("dvb").className="rec";$("dvb").textContent=$("vb").textContent="⏹ 15";
+  mt=setInterval(function(){ms++;$("dvb").textContent=$("vb").textContent="⏹ "+(15-ms);if(ms>=15&&mr)mr.stop()},1000);
+};
+
+// ---------- แอดมิน ----------
+$("adm").onclick=function(){
+  if(admin){ak="";try{localStorage.removeItem("smak")}catch(e){}connect();return}
+  var k=prompt("ใส่รหัสแอดมิน");if(!k)return;
+  ak=k.trim();connect(true);
+};
+
+// ---------- ประกาศจากแอดมิน ----------
+var ann=null,annSeen=0;
+try{annSeen=+localStorage.getItem("smas")||0}catch(e){}
+function showAnn(){
+  if(ann&&ann.t&&ann.ts!==annSeen){$("ant").textContent=ann.t;$("an").style.display="flex"}else $("an").style.display="none";
+}
+$("an").onclick=function(){if(ann){annSeen=ann.ts;try{localStorage.setItem("smas",annSeen)}catch(e){}}showAnn()};
+$("anb").onclick=function(){
+  if(!admin)return;
+  var v=prompt("พิมพ์ข้อความประกาศ (ปล่อยว่างแล้วตกลง = ปิดประกาศ)",ann&&ann.t||"");
+  if(v===null)return;
+  api("/api/announce",{t:v.trim()}).then(res);
+};
+
+// ---------- เชื่อมต่อเซิร์ฟเวอร์ ----------
+function connect(tryAdmin){
+  if(es)es.close();
+  es=new EventSource("/events?tk="+encodeURIComponent(tk)+(ak?"&ak="+encodeURIComponent(ak):""));
+  es.addEventListener("init",function(e){
+    var x=JSON.parse(e.data);conn=true;
+    uid=x.me.id;admin=!!x.me.admin;banUntil=x.me.ban||0;myPv=x.me.pv||0;
+    if(tryAdmin&&!admin){ak="";note("รหัสแอดมินไม่ถูกต้อง")}
+    else if(ak){try{localStorage.setItem("smak",ak)}catch(e){}}
+    if(!ak)admin=false;
+    chat=[].concat(x.msgs.general||[],x.msgs.checkpoint||[]);
+    people=x.people||[];dm=x.dms||[];ann=x.announce||null;showAnn();bans=x.bans||{};
+    if(myPic&&!myPv)uploadPic();
+    setAv();push();render();renderDm();
+  });
+  es.addEventListener("msg",function(e){chat.push(JSON.parse(e.data));if(chat.length>300)chat.shift();render()});
+  es.addEventListener("people",function(e){people=JSON.parse(e.data);render()});
+  es.addEventListener("dm",function(e){dm.push(JSON.parse(e.data));renderDm();render()});
+  es.addEventListener("ban",function(e){banUntil=JSON.parse(e.data).until||0;if(banUntil)chkBan();else note(ph())});
+  es.addEventListener("announce",function(e){ann=JSON.parse(e.data);showAnn()});
+  es.addEventListener("bans",function(e){bans=JSON.parse(e.data);updBan()});
+  es.onerror=function(){conn=false;render()};
+}
+connect();
+setInterval(push,30000);
+render();
+</script>
+</body>
+</html>

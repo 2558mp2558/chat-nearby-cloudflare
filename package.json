@@ -1,0 +1,9 @@
+{
+  "name": "samutsongkhram-chat",
+  "version": "1.0.0",
+  "description": "แชตคนใกล้ตัว สมุทรสงคราม",
+  "main": "server.js",
+  "scripts": { "start": "node server.js" },
+  "engines": { "node": ">=16" },
+  "license": "MIT"
+}
