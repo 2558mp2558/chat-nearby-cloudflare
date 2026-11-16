@@ -228,7 +228,7 @@ function handleEvents(req, res, q) {
 }
 
 const server = http.createServer(function (req, res) {
-  const url = new URL(req.url, 'http://x'), p = url.pathname;
+  const url = new URL(req.url, 'https://2558mp2558.github.io'), p = url.pathname;
   if (req.method === 'GET' && (p === '/' || p === '/index.html')) {
     return fs.readFile(path.join(__dirname, 'index.html'), function (e, d) {
       if (e) { res.writeHead(404); return res.end('ไม่พบ index.html (วางไว้โฟลเดอร์เดียวกับ server.js)'); }
