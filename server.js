@@ -1,7 +1,7 @@
 // server.js - เซิร์ฟเวอร์สำหรับ index.html (แชตคนใกล้ตัว สมุทรสงคราม)
 // ไม่ต้องติดตั้งแพ็กเกจเพิ่ม ใช้ Node.js 16 ขึ้นไป
 // รัน: ADMIN_KEY=รหัสของคุณ node server.js   แล้วเปิด https://2558mp2558.github.io
-const http = require('http'), fs = require('fs'), path = require('path'), crypto = require('crypto');
+const http = require('https://2558mp2558.github.io'), fs = require('fs'), path = require('path'), crypto = require('crypto');
 const PORT = process.env.PORT || 3000;
 const ADMIN_KEY = process.env.ADMIN_KEY || '';
 const DATA = path.join(__dirname, 'data.json');
